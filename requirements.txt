@@ -1,0 +1,4 @@
+aiohttp==3.9.3
+pygeotile==1.0.6
+pylineclip==1.0.0
+Requests==2.31.0
