@@ -1,0 +1,10 @@
+tools/*
+obstacles/obstacles/*
+map/12/*
+map/13/*
+map/14/*
+map/15/*
+map/16/*
+obstacles/__pycache__/*
+map/__pycache__/*
+obstacles/obstacles/*

@@ -12,7 +12,7 @@ from pygeotile.tile import Tile
 
 import os
 
-path = "./tools/obstacles/obstacles/"
+path = "./obstacles/"
 url = "https://data.geo.admin.ch/ch.bazl.luftfahrthindernis/luftfahrthindernis/luftfahrthindernis_4326.kmz"
 verbose = False
 TILESIZE = 256 #Fixed Size from the wmts service manually entered.
