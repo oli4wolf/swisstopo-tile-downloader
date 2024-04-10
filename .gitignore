@@ -1,5 +1,9 @@
 tools/*
-obstacles/obstacles/*
+obstacles/12/*
+obstacles/13/*
+obstacles/14/*
+obstacles/15/*
+obstacles/16/*
 map/12/*
 map/13/*
 map/14/*
@@ -7,4 +11,12 @@ map/15/*
 map/16/*
 obstacles/__pycache__/*
 map/__pycache__/*
-obstacles/obstacles/*
+thermik/12/*
+thermik/13/*
+thermik/14/*
+thermik/15/*
+thermik/16/*
+thermik/__pycache__/*
+obstacles/signature/*
+thermik/hotspots.csv
+obstacles/Active_*
