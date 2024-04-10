@@ -4,3 +4,5 @@ Simple python script (map/dowloaderTiles.py) to download tiles from the Swiss Fe
 Additionaly a second script (obstacles/downloaderObstacles.py) downloads the flight obstacles and generates the point in the dimension of the downloaded tiles.
 
 Please consider to use Linux or other OS which handles many small files better.
+
+Thermik Hotspot is the CSV of bounding box switzerland from KK7.
