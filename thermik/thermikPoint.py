@@ -5,6 +5,7 @@ import requests
 import shutil
 from tilepoint import TilePoint
 import os
+import sys
 
 path = "./thermik/"
 
@@ -39,14 +40,25 @@ def readKK7Hotspots(zoom):
             #46.63365,7.64855,1750,96
             lat, lon, height, percentage = line[0].split(',')[:4]
             tilePoint = TilePoint(float(lat), float(lon), zoom, 256)
-            writeAppendPoint(zoom, str(height), tilePoint.getTile()[0], tilePoint.getTile()[1], tilePoint.getTilePixel()[0], tilePoint.getTilePixel()[0], "Thermal", percentage)
+            writeAppendPoint(zoom, str(height), tilePoint.getTile()[0], tilePoint.getTile()[1], tilePoint.getTilePixel()[0], tilePoint.getTilePixel()[1], "Thermal", percentage)
 
 
 def main():
-    #downloadKK7Hotspots()
+    downloadKK7Hotspots()
     for zoom in range(12, 16):
         deleteOldHotspots(zoom)
         readKK7Hotspots(zoom)
 
+def debug(line):
+    lat, lon, height, percentage = line.split(',')[:4]
+    print(lat, lon, height, percentage)
+    tilePoint = TilePoint(float(lat), float(lon), 15, 256)
+    print(tilePoint.getTile())
+    print(tilePoint.getTilePixel())
+
+# python thermikPoint.py debug 46.63365,7.64855,1750,96
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1 and sys.argv[1] == "debug":
+        debug(sys.argv[2])
+    else:
+        main()
