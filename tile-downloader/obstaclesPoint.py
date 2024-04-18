@@ -5,7 +5,7 @@ import sys
 from xml.dom import minidom
 import requests, zipfile, io
 
-from calc_segment import Segment
+from calcSegment import Segment
 from tilepoint import TilePoint
 
 import os
