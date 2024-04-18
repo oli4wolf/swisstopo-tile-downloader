@@ -8,7 +8,6 @@ setup(
     packages=find_packages(),
     install_requires=[
         # List your dependencies here
-        "aiohttp==3.9.3",
         "pygeotile==1.0.6",
         "pylineclip==1.0.0",
         "Requests==2.31.0"
