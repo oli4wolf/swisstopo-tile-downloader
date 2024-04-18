@@ -1,14 +1,12 @@
 import glob
 import os
 import shutil
+import sys
 from xml.dom import minidom
 import requests, zipfile, io
 
 from calc_segment import Segment
 from tilepoint import TilePoint
-
-from pygeotile.point import Point
-from pygeotile.tile import Tile
 
 import os
 
@@ -175,14 +173,28 @@ def writeAppendPoint(zoom, name, tile_x, tile_y, idx_x, idx_y, geometryType, i):
     with open(path+str(zoom)+"/"+str(tile_x)+"/"+str(tile_y)+"_point.dat", 'a+') as f:
         f.write(""+name+","+str(i)+","+geometryType+","+str(idx_x)+","+str(idx_y)+"\n")
 
-#Main Application
-deleteKMZandKML()
-downloadKMZtoKML(url)
 
-for zoom in range(12,16): #initial 12, 16.
-    deleteOldObstacles(zoom)
-    readKMLObstacles(zoom)
+def main(path, download):
+    path = path+"obstacles/"
+    if not os.path.exists(path):
+        os.makedirs(path)
+    if download:
+        deleteKMZandKML()
+        downloadKMZtoKML(url)
+    for zoom in range(12, 16):
+        deleteOldObstacles(zoom)
+        readKMLObstacles(zoom)
 
+def debug(line):
+    lat, lon, height, percentage = line.split(',')[:4]
+    print(lat, lon, height, percentage)
+    tilePoint = TilePoint(float(lat), float(lon), 15, 256)
+    print(tilePoint.getTile())
+    print(tilePoint.getTilePixel())
 
-#deleteOldObstacles(15)
-#readKML(path+"Obstacle_Testdata.xml",15)
+# python thermikPoint.py debug 46.63365,7.64855,1750,96
+if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == "debug":
+        debug(sys.argv[2])
+    else:
+        main("./", True)
