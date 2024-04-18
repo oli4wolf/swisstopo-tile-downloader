@@ -22,3 +22,8 @@ thermik/hotspots.csv
 obstacles/Active_*
 swisstlm3d/*
 tile-downloader/__pycache__/*
+hike/12/*
+hike/13/*
+hike/14/*
+hike/15/*
+hike/16/*

@@ -34,65 +34,67 @@ class GlobalMercator(object):
         # return (2 * math.pi * 6378137) / (self.tileSize * 2**zoom)
         return self.initialResolution / (2**zoom)
 
-'''
-Weissenbühl etwa
-https://wmts10.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/15/17059/11533.jpeg
-46.935598, 7.431087
-'''
 
-gm = GlobalMercator()
-zoom = 15
-lat = 46.935598
-lon = 7.431087
-mx = gm.LatLonToMeters(lat, lon)[0]
-my = gm.LatLonToMeters(lat, lon)[1]
-print(gm.LatLonToMeters(lat, lon))
-px = gm.MetersToPixels(mx,my,zoom)[0]
-py = gm.MetersToPixels(mx,my,zoom)[1]
-print(gm.MetersToPixels(mx,my,zoom))
-tx = gm.PixelsToTile(px,py)[0]
-ty = gm.PixelsToTile(px,py)[1]
-print(gm.PixelsToTile(px,py))
+def debug():
+    '''
+    Weissenbühl etwa
+    https://wmts10.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/15/17059/11533.jpeg
+    46.935598, 7.431087
+    '''
 
-'''
-BoundingBox EPSG 3857
-'''
-zoom = 15
-lat = 45.398181
-lon = 5.140242 
-mx = gm.LatLonToMeters(lat, lon)[0]
-my = gm.LatLonToMeters(lat, lon)[1]
-print(gm.LatLonToMeters(lat, lon))
-px = gm.MetersToPixels(mx,my,zoom)[0]
-py = gm.MetersToPixels(mx,my,zoom)[1]
-print(gm.MetersToPixels(mx,my,zoom))
-tx = gm.PixelsToTile(px,py)[0]
-ty = gm.PixelsToTile(px,py)[1]
-print(gm.PixelsToTile(px,py))
+    gm = GlobalMercator()
+    zoom = 15
+    lat = 46.935598
+    lon = 7.431087
+    mx = gm.LatLonToMeters(lat, lon)[0]
+    my = gm.LatLonToMeters(lat, lon)[1]
+    print(gm.LatLonToMeters(lat, lon))
+    px = gm.MetersToPixels(mx,my,zoom)[0]
+    py = gm.MetersToPixels(mx,my,zoom)[1]
+    print(gm.MetersToPixels(mx,my,zoom))
+    tx = gm.PixelsToTile(px,py)[0]
+    ty = gm.PixelsToTile(px,py)[1]
+    print(gm.PixelsToTile(px,py))
 
-zoom = 15
-lat = 48.230651
-lon = 11.47757
-mx = gm.LatLonToMeters(lat, lon)[0]
-my = gm.LatLonToMeters(lat, lon)[1]
-print(gm.LatLonToMeters(lat, lon))
-px = gm.MetersToPixels(mx,my,zoom)[0]
-py = gm.MetersToPixels(mx,my,zoom)[1]
-print(gm.MetersToPixels(mx,my,zoom))
-tx = gm.PixelsToTile(px,py)[0]
-ty = gm.PixelsToTile(px,py)[1]
-print(gm.PixelsToTile(px,py))
+    '''
+    BoundingBox EPSG 3857
+    '''
+    zoom = 15
+    lat = 45.398181
+    lon = 5.140242 
+    mx = gm.LatLonToMeters(lat, lon)[0]
+    my = gm.LatLonToMeters(lat, lon)[1]
+    print(gm.LatLonToMeters(lat, lon))
+    px = gm.MetersToPixels(mx,my,zoom)[0]
+    py = gm.MetersToPixels(mx,my,zoom)[1]
+    print(gm.MetersToPixels(mx,my,zoom))
+    tx = gm.PixelsToTile(px,py)[0]
+    ty = gm.PixelsToTile(px,py)[1]
+    print(gm.PixelsToTile(px,py))
 
-print("Nidau")
-zoom = 15
-lat = 47.12750
-lon = 7.23314
-mx = gm.LatLonToMeters(lat, lon)[0]
-my = gm.LatLonToMeters(lat, lon)[1]
-print(gm.LatLonToMeters(lat, lon))
-px = gm.MetersToPixels(mx,my,zoom)[0]
-py = gm.MetersToPixels(mx,my,zoom)[1]
-print(gm.MetersToPixels(mx,my,zoom))
-tx = gm.PixelsToTile(px,py)[0]
-ty = gm.PixelsToTile(px,py)[1]
-print(gm.PixelsToTile(px,py))
+    zoom = 15
+    lat = 48.230651
+    lon = 11.47757
+    mx = gm.LatLonToMeters(lat, lon)[0]
+    my = gm.LatLonToMeters(lat, lon)[1]
+    print(gm.LatLonToMeters(lat, lon))
+    px = gm.MetersToPixels(mx,my,zoom)[0]
+    py = gm.MetersToPixels(mx,my,zoom)[1]
+    print(gm.MetersToPixels(mx,my,zoom))
+    tx = gm.PixelsToTile(px,py)[0]
+    ty = gm.PixelsToTile(px,py)[1]
+    print(gm.PixelsToTile(px,py))
+
+    print("Nidau")
+    zoom = 15
+    lat = 47.12750
+    lon = 7.23314
+    mx = gm.LatLonToMeters(lat, lon)[0]
+    my = gm.LatLonToMeters(lat, lon)[1]
+    print(gm.LatLonToMeters(lat, lon))
+    px = gm.MetersToPixels(mx,my,zoom)[0]
+    py = gm.MetersToPixels(mx,my,zoom)[1]
+    print(gm.MetersToPixels(mx,my,zoom))
+    tx = gm.PixelsToTile(px,py)[0]
+    ty = gm.PixelsToTile(px,py)[1]
+    print(gm.PixelsToTile(px,py))
