@@ -30,27 +30,23 @@ class Segment:
                 pcRes = pylineclip.cohensutherland(pBTopLeft.pixels(zoom)[0], pBTopLeft.pixels(zoom)[1], pBBottomRight.pixels(zoom)[0], pBBottomRight.pixels(zoom)[1], p1.pixels(zoom)[0], p1.pixels(zoom)[1],
                                     p2.pixels(zoom)[0], p2.pixels(zoom)[1])
                 intersectionPoint = Point.from_pixel(pcRes[2],pcRes[3],zoom)
-                print(Segment.determinPixelFromTile(zoom,intersectionPoint,t1))
+                #print(Segment.determinPixelFromTile(zoom,intersectionPoint,t1))
                 
                 # if x = 0 then left so one tile less but what is the value?
                 # Left
                 if Segment.determinPixelFromTile(zoom,intersectionPoint,t1)[0]==0:
-                    print("Left")
                     next = Point.from_pixel(intersectionPoint.pixels(zoom)[0]-1,intersectionPoint.pixels(zoom)[1],zoom)
                     intersection = Segment.determinPixelFromTile(zoom,intersectionPoint,t1)
                     return LEFT, next.latitude_longitude, intersection
                 elif Segment.determinPixelFromTile(zoom,intersectionPoint,t1)[0]>=256:
-                    print("Right")
                     next = Point.from_pixel(intersectionPoint.pixels(zoom)[0]+1,intersectionPoint.pixels(zoom)[1],zoom)
                     intersection = Segment.determinPixelFromTile(zoom,intersectionPoint,t1)
                     return RIGHT, next.latitude_longitude, intersection
                 elif Segment.determinPixelFromTile(zoom,intersectionPoint,t1)[1]==0:
-                    print("Top")
                     next = Point.from_pixel(intersectionPoint.pixels(zoom)[0],intersectionPoint.pixels(zoom)[1]-1,zoom)
                     intersection = Segment.determinPixelFromTile(zoom,intersectionPoint,t1)
                     return TOP, next.latitude_longitude, intersection
                 elif Segment.determinPixelFromTile(zoom,intersectionPoint,t1)[1]>= 256:
-                    print("Below")
                     next = Point.from_pixel(intersectionPoint.pixels(zoom)[0],intersectionPoint.pixels(zoom)[1]+1,zoom)
                     intersection = Segment.determinPixelFromTile(zoom,intersectionPoint,t1)
                     return BELOW, next.latitude_longitude, intersection

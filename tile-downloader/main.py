@@ -12,6 +12,7 @@ def main(path, download):
     tileDownloader.main(path, download)
     print("Download finished.")
 
+# Example python main.py d:/ True
 if __name__ == "__main__":
     if len(sys.argv) > 2:
         main(sys.argv[1], sys.argv[2])
