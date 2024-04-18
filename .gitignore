@@ -20,3 +20,5 @@ thermik/__pycache__/*
 obstacles/signature/*
 thermik/hotspots.csv
 obstacles/Active_*
+swisstlm3d/*
+tile-downloader/__pycache__/*

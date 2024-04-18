@@ -43,8 +43,12 @@ def readKK7Hotspots(zoom):
             writeAppendPoint(zoom, str(height), tilePoint.getTile()[0], tilePoint.getTile()[1], tilePoint.getTilePixel()[0], tilePoint.getTilePixel()[1], "Thermal", percentage)
 
 
-def main():
-    downloadKK7Hotspots()
+def main(path, download):
+    path = path+"thermik/"
+    if not os.path.exists(path):
+        os.makedirs(path)
+    if download:
+        downloadKK7Hotspots()
     for zoom in range(12, 16):
         deleteOldHotspots(zoom)
         readKK7Hotspots(zoom)
@@ -61,4 +65,4 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "debug":
         debug(sys.argv[2])
     else:
-        main()
+        main("./", True)
