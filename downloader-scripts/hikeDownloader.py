@@ -20,7 +20,7 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 from tileCalculation import GlobalMercator
 
-path = "./hike/"
+path = "hike/"
 
 cnt = 0
 def saveFile(zoom, x, y, tile):
@@ -47,7 +47,7 @@ def initializeAndLaunch():
     #Bounding box
     #<ows:LowerCorner>5.140242 45.398181</ows:LowerCorner>
     #<ows:UpperCorner>11.47757 48.230651</ows:UpperCorner>
-    for z in range(15,16,1):
+    for z in range(12,17,1):
         #LowerCorner
         gm = GlobalMercator()
         mx = gm.LatLonToMeters(45.398181,5.140242)[0]
@@ -72,8 +72,8 @@ def initializeAndLaunch():
     with ThreadPoolExecutor(max_workers=32) as executor:
         executor.map(download, urls) #urls=[list of url] 
 
-def main(path, download):
-    path = path+"hike/"
+def main(filepath, download):
+    path = filepath+"hike/"
     if not os.path.exists(path):
         os.makedirs(path)
     if download:

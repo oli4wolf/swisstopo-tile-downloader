@@ -10,7 +10,7 @@ from tilepoint import TilePoint
 
 import os
 
-path = "./obstacles/"
+path = "obstacles/"
 url = "https://data.geo.admin.ch/ch.bazl.luftfahrthindernis/luftfahrthindernis/luftfahrthindernis_4326.kmz"
 verbose = False
 TILESIZE = 256 #Fixed Size from the wmts service manually entered.
@@ -174,14 +174,14 @@ def writeAppendPoint(zoom, name, tile_x, tile_y, idx_x, idx_y, geometryType, i):
         f.write(""+name+","+str(i)+","+geometryType+","+str(idx_x)+","+str(idx_y)+"\n")
 
 
-def main(path, download):
-    path = path+"obstacles/"
+def main(filepath, download):
+    path = filepath+"obstacles/"
     if not os.path.exists(path):
         os.makedirs(path)
     if download:
         deleteKMZandKML()
         downloadKMZtoKML(url)
-    for zoom in range(12, 16):
+    for zoom in range(12, 17):
         deleteOldObstacles(zoom)
         readKMLObstacles(zoom)
 
