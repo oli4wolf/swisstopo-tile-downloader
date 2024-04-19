@@ -7,8 +7,7 @@ from tilepoint import TilePoint
 import os
 import sys
 
-path = "./thermik/"
-
+path = "thermik/"
 
 def deleteOldHotspots(zoom):
     if os.path.exists(path+str(zoom)):
@@ -43,13 +42,13 @@ def readKK7Hotspots(zoom):
             writeAppendPoint(zoom, str(height), tilePoint.getTile()[0], tilePoint.getTile()[1], tilePoint.getTilePixel()[0], tilePoint.getTilePixel()[1], "Thermal", percentage)
 
 
-def main(path, download):
-    path = path+"thermik/"
+def main(filepath, download):
+    path = filepath+"thermik/"
     if not os.path.exists(path):
         os.makedirs(path)
     if download:
         downloadKK7Hotspots()
-    for zoom in range(12, 16):
+    for zoom in range(12, 17):
         deleteOldHotspots(zoom)
         readKK7Hotspots(zoom)
 

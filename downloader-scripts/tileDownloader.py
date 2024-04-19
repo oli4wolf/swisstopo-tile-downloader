@@ -52,7 +52,7 @@ def initializeAndLaunch():
     #Bounding box
     #<ows:LowerCorner>5.140242 45.398181</ows:LowerCorner>
     #<ows:UpperCorner>11.47757 48.230651</ows:UpperCorner>
-    for z in range(12,16,1):
+    for z in range(12,17,1):
         #LowerCorner
         gm = GlobalMercator()
         mx = gm.LatLonToMeters(45.398181,5.140242)[0]
@@ -77,8 +77,8 @@ def initializeAndLaunch():
     with ThreadPoolExecutor(max_workers=32) as executor:
         executor.map(download, urls) #urls=[list of url] 
 
-def main(path, download):
-    path = path+"map/"
+def main(filepath, download):
+    path = filepath+"map/"
     if not os.path.exists(path):
         os.makedirs(path)
     if download:
