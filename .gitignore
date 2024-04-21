@@ -27,3 +27,7 @@ hike/14/*
 hike/15/*
 hike/16/*
 download-scripts/__pycache__/*
+download-scripts/map/*
+download-scripts/thermik/*
+download-scripts/obstacles/*
+download-scripts/hike/*
