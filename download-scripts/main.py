@@ -1,3 +1,4 @@
+from multiprocessing import Process
 import sys
 import thermikPoint
 import obstaclesPoint
@@ -6,13 +7,21 @@ import hikeDownloader
 
 def main(path, download):
     print("Starting download of thermik hotspots.")
-    thermikPoint.main(path, download)
+    thermikProc = Process(target=thermikPoint.main, args=(path, download))
+    thermikProc.start()
     print("Starting download of obstacles.")
-    obstaclesPoint.main(path, download)
+    obstaclesProc = Process(target=obstaclesPoint.main, args=(path, download))
+    obstaclesProc.start()
     print("Starting download of tiles.")
-    tileDownloader.main(path, download)
+    tileProc = Process(target=tileDownloader.main, args=(path, download))
+    tileProc.start()
     print("Starting download of hikes.")
-    hikeDownloader.main(path, download)
+    hikeProc = Process(target=hikeDownloader.main, args=(path, download))
+    hikeProc.start()
+    thermikProc.join()
+    obstaclesProc.join()
+    tileProc.join()
+    hikeProc.join()
     print("Download finished.")
 
 # Example python main.py d:/ True
