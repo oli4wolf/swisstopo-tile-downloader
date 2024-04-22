@@ -16,38 +16,43 @@ https://wmts10.geo.admin.ch/1.0.0/ch.swisstopo.swisstlm3d-wanderwege/default/cur
 
 import os
 import re
-from concurrent.futures import ThreadPoolExecutor
-import requests
 from tileCalculation import GlobalMercator
 
-path = "hike/"
+import asyncio
+import aiohttp
+import aiofiles
 
+async def download(url: str, zoom: int, x: int, y: int):
+    retry = True
+    while retry:
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as response:
+                    if not os.path.exists(path+str(zoom)+"/"+str(x)):
+                        os.makedirs(path+str(zoom)+"/"+str(x))
+                    async with aiofiles.open(path+str(zoom)+"/"+str(x)+"/"+str(y)+".png", "wb") as f:
+                        content = await response.read()
+                        if len(content) > 350:
+                            await f.write(content)
+                        retry = False
+        except aiohttp.ClientError:
+                # sleep a little and try again
+                await asyncio.sleep(1)
+        except Exception as e:
+                # sleep a little and try again
+                print(e)
+                await asyncio.sleep(1)
+
+
+path = "./hike/"
+urls=[]
 cnt = 0
-def saveFile(zoom, x, y, tile):
-        if not os.path.exists(path+str(zoom)+"/"+str(x)):
-            os.makedirs(path+str(zoom)+"/"+str(x))
-        with open(path+str(zoom)+"/"+str(x)+"/"+str(y)+".png", 'wb') as f:
-            f.write(tile)
-            f.close
-
-def download(url):
-    response = requests.get(url)
-    if response.status_code == 200:
-        temp = re.findall(r'\d+', url)
-        val = list(map(int, temp))
-        img_data = response.content
-        if val[6]%100==0:
-            print(len(img_data),url)
-        if(len(img_data)>334):
-            print(len(img_data),url)
-            saveFile(val[6],val[7],val[8],img_data)
 
 def initializeAndLaunch():
-    urls=[]
     #Bounding box
     #<ows:LowerCorner>5.140242 45.398181</ows:LowerCorner>
     #<ows:UpperCorner>11.47757 48.230651</ows:UpperCorner>
-    for z in range(12,17,1):
+    for z in range(12,13,1):
         #LowerCorner
         gm = GlobalMercator()
         mx = gm.LatLonToMeters(45.398181,5.140242)[0]
@@ -69,16 +74,23 @@ def initializeAndLaunch():
             for x in range(lowerTileX, upperTileX+1,1):
                 urls.append("https://wmts3.geo.admin.ch/1.0.0/ch.swisstopo.swisstlm3d-wanderwege/default/current/3857/"+str(z)+"/"+str(x)+"/"+str(y)+".png")
 
-    with ThreadPoolExecutor(max_workers=32) as executor:
-        executor.map(download, urls) #urls=[list of url] 
-
-def main(filepath, download):
+async def main(filepath, download):
     path = filepath+"hike/"
     if not os.path.exists(path):
         os.makedirs(path)
     if download:
         initializeAndLaunch()
+    async with asyncio.TaskGroup() as group:
+        for url in urls:
+            zoom = re.search(r'/3857/(\d+)', url).group(1)
+            zoom_pattern = rf'/{zoom}/(\d+)'
+            tile_x = re.search(zoom_pattern, url).group(1)
+            tile_x_pattern = rf'/{tile_x}/(\d+)'
+            tile_y = re.search(tile_x_pattern, url).group(1)
+            group.create_task(download(url, zoom, tile_x, tile_y))
+
+asyncio.run(main("./", True))
 
 # python thermikPoint.py debug 46.63365,7.64855,1750,96
 if __name__ == "__main__":
-    main("./", True)
+    asyncio.run(main("./", True))

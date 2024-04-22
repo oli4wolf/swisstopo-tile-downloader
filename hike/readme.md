@@ -1,1 +1,0 @@
-The png has transparency which should be overlayed on the map tile jpeg.
