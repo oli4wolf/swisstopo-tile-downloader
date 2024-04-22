@@ -22,7 +22,13 @@ import asyncio
 import aiohttp
 import aiofiles
 
-async def download(url: str, zoom: int, x: int, y: int):
+import datetime
+
+
+path = "./hike/"
+urls=[]
+
+async def fileDownload(url: str, zoom: int, x: int, y: int):
     retry = True
     while retry:
         try:
@@ -42,11 +48,6 @@ async def download(url: str, zoom: int, x: int, y: int):
                 # sleep a little and try again
                 print(e)
                 await asyncio.sleep(1)
-
-
-path = "./hike/"
-urls=[]
-cnt = 0
 
 def initializeAndLaunch():
     #Bounding box
@@ -75,6 +76,8 @@ def initializeAndLaunch():
                 urls.append("https://wmts3.geo.admin.ch/1.0.0/ch.swisstopo.swisstlm3d-wanderwege/default/current/3857/"+str(z)+"/"+str(x)+"/"+str(y)+".png")
 
 async def main(filepath, download):
+    now = datetime.datetime.now()
+    print(now.time())
     path = filepath+"hike/"
     if not os.path.exists(path):
         os.makedirs(path)
@@ -87,9 +90,9 @@ async def main(filepath, download):
             tile_x = re.search(zoom_pattern, url).group(1)
             tile_x_pattern = rf'/{tile_x}/(\d+)'
             tile_y = re.search(tile_x_pattern, url).group(1)
-            group.create_task(download(url, zoom, tile_x, tile_y))
-
-asyncio.run(main("./", True))
+            group.create_task(fileDownload(url, zoom, tile_x, tile_y))
+    now = datetime.datetime.now()
+    print(now.time())
 
 # python thermikPoint.py debug 46.63365,7.64855,1750,96
 if __name__ == "__main__":
