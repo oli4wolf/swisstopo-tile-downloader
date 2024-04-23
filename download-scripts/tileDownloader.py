@@ -41,7 +41,7 @@ async def fileDownload(url: str, zoom: int, x: int, y: int):
                         os.makedirs(path+str(zoom)+"/"+str(x))
                     async with aiofiles.open(path+str(zoom)+"/"+str(x)+"/"+str(y)+".png", "wb") as f:
                         content = await response.read()
-                        if len(content) > 350:
+                        if len(content) > 668:
                             await f.write(content)
                         retry = False
         except aiohttp.ClientError:
@@ -52,31 +52,31 @@ async def fileDownload(url: str, zoom: int, x: int, y: int):
                 print(e)
                 await asyncio.sleep(1)
 
-def initializeAndLaunch():
+def initializeAndLaunch(z:int):
     #Bounding box
     #<ows:LowerCorner>5.140242 45.398181</ows:LowerCorner>
     #<ows:UpperCorner>11.47757 48.230651</ows:UpperCorner>
-    for z in range(12,17,1):
-        #LowerCorner
-        gm = GlobalMercator()
-        mx = gm.LatLonToMeters(45.398181,5.140242)[0]
-        my = gm.LatLonToMeters(45.398181,5.140242)[1]
-        px = gm.MetersToPixels(mx,my,z)[0]
-        py = gm.MetersToPixels(mx,my,z)[1]
-        lowerTileX = gm.PixelsToTile(px,py)[0]
-        upperTileY = gm.PixelsToTile(px,py)[1]
-        print(gm.PixelsToTile(px,py))
-        #UpperCorner
-        mx = gm.LatLonToMeters(48.230651, 11.47757)[0]
-        my = gm.LatLonToMeters(48.230651, 11.47757)[1]
-        px = gm.MetersToPixels(mx,my,z)[0]
-        py = gm.MetersToPixels(mx,my,z)[1]
-        upperTileX = gm.PixelsToTile(px,py)[0]
-        lowerTileY = gm.PixelsToTile(px,py)[1]
-        print(gm.PixelsToTile(px,py))
-        for y in range(lowerTileY,upperTileY+1,1):
-            for x in range(lowerTileX, upperTileX+1,1):
-                urls.append("https://wmts3.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/"+str(z)+"/"+str(x)+"/"+str(y)+".jpeg")
+    #LowerCorner
+    gm = GlobalMercator()
+    mx = gm.LatLonToMeters(45.398181,5.140242)[0]
+    my = gm.LatLonToMeters(45.398181,5.140242)[1]
+    px = gm.MetersToPixels(mx,my,z)[0]
+    py = gm.MetersToPixels(mx,my,z)[1]
+    lowerTileX = gm.PixelsToTile(px,py)[0]
+    upperTileY = gm.PixelsToTile(px,py)[1]
+    print(gm.PixelsToTile(px,py))
+    #UpperCorner
+    mx = gm.LatLonToMeters(48.230651, 11.47757)[0]
+    my = gm.LatLonToMeters(48.230651, 11.47757)[1]
+    px = gm.MetersToPixels(mx,my,z)[0]
+    py = gm.MetersToPixels(mx,my,z)[1]
+    upperTileX = gm.PixelsToTile(px,py)[0]
+    lowerTileY = gm.PixelsToTile(px,py)[1]
+    print(gm.PixelsToTile(px,py))
+    for y in range(lowerTileY,upperTileY+1,1):
+        for x in range(lowerTileX, upperTileX+1,1):
+            urls.append("https://wmts3.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/"+str(z)+"/"+str(x)+"/"+str(y)+".jpeg")
+    return urls
 
 async def main(filepath, download):
     now = datetime.datetime.now()
@@ -85,17 +85,22 @@ async def main(filepath, download):
     if not os.path.exists(path):
         os.makedirs(path)
     if download:
-        initializeAndLaunch()
-    async with asyncio.TaskGroup() as group:
-        for url in urls:
-            zoom = re.search(r'/3857/(\d+)', url).group(1)
-            zoom_pattern = rf'/{zoom}/(\d+)'
-            tile_x = re.search(zoom_pattern, url).group(1)
-            tile_x_pattern = rf'/{tile_x}/(\d+)'
-            tile_y = re.search(tile_x_pattern, url).group(1)
-            group.create_task(fileDownload(url, zoom, tile_x, tile_y))
-    now = datetime.datetime.now()
-    print(now.time())
+        for z in range(12,17,1):
+            urls = initializeAndLaunch(z)
+    # Split the urls list into chunks of 1000 elements each
+            chunks = [urls[i:i+1000] for i in range(0, len(urls), 1000)]
+            # Process each chunk asynchronously
+            for chunk in chunks:
+                async with asyncio.TaskGroup() as group:
+                    for url in chunk:
+                        zoom = re.search(r'/3857/(\d+)', url).group(1)
+                        zoom_pattern = rf'/{zoom}/(\d+)'
+                        tile_x = re.search(zoom_pattern, url).group(1)
+                        tile_x_pattern = rf'/{tile_x}/(\d+)'
+                        tile_y = re.search(tile_x_pattern, url).group(1)
+                        group.create_task(fileDownload(url, zoom, tile_x, tile_y))
+        now = datetime.datetime.now()
+        print(now.time())
 
 # python thermikPoint.py debug 46.63365,7.64855,1750,96
 if __name__ == "__main__":
