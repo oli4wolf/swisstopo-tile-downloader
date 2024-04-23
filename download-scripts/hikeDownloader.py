@@ -24,7 +24,6 @@ import aiofiles
 
 import datetime
 
-
 path = "./hike/"
 urls=[]
 
@@ -53,7 +52,7 @@ def initializeAndLaunch():
     #Bounding box
     #<ows:LowerCorner>5.140242 45.398181</ows:LowerCorner>
     #<ows:UpperCorner>11.47757 48.230651</ows:UpperCorner>
-    for z in range(12,13,1):
+    for z in range(12,17,1):
         #LowerCorner
         gm = GlobalMercator()
         mx = gm.LatLonToMeters(45.398181,5.140242)[0]
