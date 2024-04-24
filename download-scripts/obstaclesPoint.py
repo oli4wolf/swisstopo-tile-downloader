@@ -181,7 +181,7 @@ def main(filepath, download):
     if download:
         deleteKMZandKML()
         downloadKMZtoKML(url)
-    for zoom in range(12, 17):
+    for zoom in range(13, 16):
         deleteOldObstacles(zoom)
         readKMLObstacles(zoom)
 

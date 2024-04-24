@@ -81,7 +81,7 @@ async def main(filepath, download):
     if not os.path.exists(path):
         os.makedirs(path)
     if download:
-        for z in range(12,16,1):
+        for z in range(13,16,1):
             urls = initializeAndLaunch(z)
             # Split the urls list into chunks of 1000 elements each
             chunks = [urls[i:i+1000] for i in range(0, len(urls), 1000)]

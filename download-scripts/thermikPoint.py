@@ -48,7 +48,7 @@ def main(filepath, download):
         os.makedirs(path)
     if download:
         downloadKK7Hotspots()
-    for zoom in range(12, 17):
+    for zoom in range(13, 16):
         deleteOldHotspots(zoom)
         readKK7Hotspots(zoom)
 
