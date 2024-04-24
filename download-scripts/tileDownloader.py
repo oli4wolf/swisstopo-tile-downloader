@@ -39,7 +39,7 @@ async def fileDownload(url: str, zoom: int, x: int, y: int):
                 async with session.get(url) as response:
                     if not os.path.exists(path+str(zoom)+"/"+str(x)):
                         os.makedirs(path+str(zoom)+"/"+str(x))
-                    async with aiofiles.open(path+str(zoom)+"/"+str(x)+"/"+str(y)+".png", "wb") as f:
+                    async with aiofiles.open(path+str(zoom)+"/"+str(x)+"/"+str(y)+".jpeg", "wb") as f:
                         content = await response.read()
                         if len(content) > 668:
                             await f.write(content)
