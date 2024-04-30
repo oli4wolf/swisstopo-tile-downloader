@@ -85,7 +85,7 @@ def readKML(filepath, zoom):
             name = placemark.getElementsByTagName("name")[0].firstChild.nodeValue
             tilePoint = TilePoint(float(coords[1]),float(coords[0]),zoom,TILESIZE)
             writeAppendPoint(zoom,name,tilePoint.getTile()[0],tilePoint.getTile()[1],
-                                tilePoint.getTilePixel()[0],tilePoint.getTilePixel()[0],
+                                tilePoint.getTilePixel()[0],tilePoint.getTilePixel()[1],
                                 "Point",0) #Todo improve with obstacleType
     return
 
