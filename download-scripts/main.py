@@ -1,27 +1,35 @@
 from multiprocessing import Process
+import asyncio
 import sys
-import thermikPoint
-import obstaclesPoint
+import thermikDownloader
+import obstacleDownloader
+import bikeDownloader
 import tileDownloader
 import hikeDownloader
 
+import tracemalloc
+
+tracemalloc.start()
+
+async def fileDownload(path, download):
+    await asyncio.gather(
+        tileDownloader.main(path, download), 
+        hikeDownloader.main(path, download), 
+        bikeDownloader.main(path, download)
+    )
+
 def main(path, download):
     print("Starting download of thermik hotspots.")
-    thermikProc = Process(target=thermikPoint.main, args=(path, download))
+    thermikProc = Process(target=thermikDownloader.main, args=(path, download))
     thermikProc.start()
     print("Starting download of obstacles.")
-    obstaclesProc = Process(target=obstaclesPoint.main, args=(path, download))
+    obstaclesProc = Process(target=obstacleDownloader.main, args=(path, download))
     obstaclesProc.start()
-    print("Starting download of tiles.")
-    tileProc = Process(target=tileDownloader.main, args=(path, download))
-    tileProc.start()
-    print("Starting download of hikes.")
-    hikeProc = Process(target=hikeDownloader.main, args=(path, download))
-    hikeProc.start()
+
+    asyncio.run(fileDownload(path, download))
+
     thermikProc.join()
     obstaclesProc.join()
-    tileProc.join()
-    hikeProc.join()
     print("Download finished.")
 
 # Example python main.py d:/ True
