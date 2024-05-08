@@ -6,6 +6,7 @@ import obstacleDownloader
 import bikeDownloader
 import tileDownloader
 import hikeDownloader
+import satDownloader
 
 import tracemalloc
 
@@ -13,9 +14,10 @@ tracemalloc.start()
 
 async def fileDownload(path, download):
     await asyncio.gather(
-        tileDownloader.main(path, download), 
+        tileDownloader.main(path, download),
         hikeDownloader.main(path, download), 
-        bikeDownloader.main(path, download)
+        bikeDownloader.main(path, download),
+        satDownloader.main(path, download)
     )
 
 def main(path, download):
