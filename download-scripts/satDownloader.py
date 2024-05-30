@@ -28,7 +28,7 @@ import aiohttp
 import aiofiles
 import datetime
 
-path = "./map/"
+path = "./satellite/"
 urls=[]
 
 async def fileDownload(url: str, zoom: int, x: int, y: int):
